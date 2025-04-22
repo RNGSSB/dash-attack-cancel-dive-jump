@@ -1,0 +1,16 @@
+[gd_scene load_steps=6 format=3 uid="uid://dogxoh06wv60a"]
+
+[ext_resource type="Script" path="res://Scripts/game_manager.gd" id="1_tt33r"]
+[ext_resource type="PackedScene" uid="uid://dsdwsy6tk5q3q" path="res://Objects/player.tscn" id="2_uropx"]
+[ext_resource type="PackedScene" uid="uid://dp1pdxv28l8ha" path="res://Objects/TEST.tscn" id="3_jm64t"]
+[ext_resource type="PackedScene" uid="uid://cgdsjtg1b0p3c" path="res://pause_menu.tscn" id="4_dcg0p"]
+[ext_resource type="PackedScene" uid="uid://bjcip0k0vh6as" path="res://Objects/player_camera.tscn" id="5_rbolp"]
+
+[node name="GameManager" type="Node2D"]
+process_mode = 3
+script = ExtResource("1_tt33r")
+PLAYER = ExtResource("2_uropx")
+LEVEL = ExtResource("3_jm64t")
+HUD = ExtResource("4_dcg0p")
+CAMERA = ExtResource("5_rbolp")
+SPAWNPOINT = Vector2(607, 336)

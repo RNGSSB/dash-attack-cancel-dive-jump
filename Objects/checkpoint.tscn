@@ -1,0 +1,67 @@
+[gd_scene load_steps=8 format=3 uid="uid://23effkp4hxmr"]
+
+[ext_resource type="Script" path="res://Scripts/checkpoint.gd" id="1_8i1y3"]
+[ext_resource type="Texture2D" uid="uid://b7ytwqg0xiek6" path="res://Sprites/checkpoint2.png" id="2_omxxq"]
+[ext_resource type="Texture2D" uid="uid://fu33t30gn6tc" path="res://Sprites/checkpoint.png" id="2_vp6gw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sv1aq"]
+
+[sub_resource type="Animation" id="Animation_y01uu"]
+resource_name = "PASSED"
+length = 0.0333367
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_vp6gw")]
+}
+
+[sub_resource type="Animation" id="Animation_egvjm"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_omxxq")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lwd5o"]
+_data = {
+"PASSED": SubResource("Animation_y01uu"),
+"RESET": SubResource("Animation_egvjm")
+}
+
+[node name="Checkpoint" type="Node2D"]
+scale = Vector2(3, 3)
+script = ExtResource("1_8i1y3")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_sv1aq")
+debug_color = Color(0.867884, 0.35328, 0, 0.42)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_omxxq")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_lwd5o")
+}
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

@@ -1,0 +1,47 @@
+[gd_scene load_steps=6 format=3 uid="uid://carlnami35s3o"]
+
+[ext_resource type="Texture2D" uid="uid://cust3emy4fuy" path="res://asgagasijogfashigfasgv.png" id="1_6th7r"]
+[ext_resource type="Script" path="res://Scripts/levelmanager.gd" id="1_kcyv5"]
+[ext_resource type="FontFile" uid="uid://deydlwbpht51a" path="res://VCR_OSD_MONO_1.001.ttf" id="2_ll5sr"]
+[ext_resource type="PackedScene" uid="uid://23effkp4hxmr" path="res://Objects/checkpoint.tscn" id="4_22y3u"]
+[ext_resource type="PackedScene" uid="uid://d1d7c5v28jg53" path="res://Objects/player_spawn.tscn" id="5_mbdqv"]
+
+[node name="Map" type="Node2D"]
+script = ExtResource("1_kcyv5")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Asgagasijogfashigfasgv" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(573, 414)
+scale = Vector2(1.87847, 1.51543)
+texture = ExtResource("1_6th7r")
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -73.5
+offset_top = -11.5
+offset_right = 73.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_ll5sr")
+theme_override_font_sizes/font_size = 60
+text = "Thanks for playing!"
+
+[node name="Checkpoint" parent="." instance=ExtResource("4_22y3u")]
+position = Vector2(-327, 962)
+
+[node name="Checkpoint2" parent="." instance=ExtResource("4_22y3u")]
+position = Vector2(122, 1126)
+checkPointNum = 2
+
+[node name="Checkpoint3" parent="." instance=ExtResource("4_22y3u")]
+position = Vector2(-64, 902)
+checkPointNum = 3
+
+[node name="PlayerSpawn" parent="." instance=ExtResource("5_mbdqv")]
+position = Vector2(-1017, 995)

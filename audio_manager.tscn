@@ -1,0 +1,170 @@
+[gd_scene load_steps=24 format=3 uid="uid://cxbt11ceett6f"]
+
+[ext_resource type="Script" path="res://Scripts/audio_manager.gd" id="1_ikamn"]
+[ext_resource type="AudioStream" uid="uid://dio3banlajlse" path="res://SFX/dive.wav" id="2_keo7y"]
+[ext_resource type="AudioStream" uid="uid://cwc0ek7l2ojkd" path="res://SFX/jump.wav" id="2_tvh53"]
+[ext_resource type="AudioStream" uid="uid://dapsiykmo431k" path="res://SFX/dash.wav" id="3_0pbqu"]
+[ext_resource type="AudioStream" uid="uid://cgiaiu1si7v3i" path="res://Music/Musiclol.mp3" id="3_1guft"]
+[ext_resource type="AudioStream" uid="uid://bx11dy3ykaf42" path="res://SFX/explosion.wav" id="3_708j7"]
+[ext_resource type="AudioStream" uid="uid://xbt3ddstobjr" path="res://SFX/portal.wav" id="3_bnx05"]
+[ext_resource type="AudioStream" uid="uid://khptdrx7hqm7" path="res://SFX/pickupCoin.wav" id="3_r7e0l"]
+[ext_resource type="AudioStream" uid="uid://dalsay5htdmia" path="res://SFX/click.wav" id="3_yfn8n"]
+[ext_resource type="AudioStream" uid="uid://bpll2fkdkidmu" path="res://Music/song2.mp3" id="4_ed6fr"]
+[ext_resource type="AudioStream" uid="uid://b6iqh26je25t3" path="res://SFX/dairstart.wav" id="4_j2dpx"]
+[ext_resource type="AudioStream" uid="uid://cv807u6ot02oj" path="res://Music/title.mp3" id="4_pftkt"]
+[ext_resource type="AudioStream" uid="uid://bm47ew2obg8o1" path="res://SFX/dairFire.wav" id="5_knt8n"]
+[ext_resource type="AudioStream" uid="uid://du60m0gpyt3mw" path="res://Music/song3.mp3" id="5_nnssv"]
+[ext_resource type="AudioStream" uid="uid://6bwtvkbgh771" path="res://SFX/land2.wav" id="5_sb1mj"]
+[ext_resource type="AudioStream" uid="uid://bjfvrolb0ghno" path="res://SFX/hitHurt.wav" id="6_1aaji"]
+[ext_resource type="AudioStream" uid="uid://272mxf4oimb3" path="res://SFX/death.wav" id="7_0bsuk"]
+[ext_resource type="AudioStream" uid="uid://c3qpijifouql1" path="res://SFX/divehop.wav" id="7_7h6qr"]
+[ext_resource type="AudioStream" uid="uid://bs38qtphu7cqi" path="res://SFX/random.wav" id="8_6ha3b"]
+[ext_resource type="AudioStream" uid="uid://d366qcjh6v1ww" path="res://SFX/slide.wav" id="8_31u0s"]
+[ext_resource type="AudioStream" uid="uid://cp2ydr5ns0an8" path="res://SFX/skid.wav" id="9_ptpyk"]
+[ext_resource type="AudioStream" uid="uid://64gq6m3qo43m" path="res://SFX/break.wav" id="10_dln1q"]
+[ext_resource type="AudioStream" uid="uid://cssgt81vw8jqd" path="res://Music/Victory.mp3" id="11_ngaur"]
+
+[node name="AudioManager" type="Node2D"]
+process_mode = 3
+script = ExtResource("1_ikamn")
+
+[node name="Jump" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(3, 0)
+stream = ExtResource("2_tvh53")
+max_distance = 1e+08
+bus = &"SFX"
+
+[node name="Portal" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(3, 0)
+stream = ExtResource("3_bnx05")
+max_distance = 1e+08
+bus = &"SFX"
+
+[node name="Song1" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(3, 0)
+stream = ExtResource("4_ed6fr")
+max_distance = 1e+08
+bus = &"Music"
+
+[node name="Song2" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(3, 0)
+stream = ExtResource("3_1guft")
+max_distance = 1e+08
+bus = &"Music"
+
+[node name="Song3" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(3, 0)
+stream = ExtResource("5_nnssv")
+max_distance = 1e+08
+bus = &"Music"
+
+[node name="Menu" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(3, 0)
+stream = ExtResource("4_pftkt")
+max_distance = 1e+08
+bus = &"Music"
+
+[node name="Coin" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(3, 0)
+stream = ExtResource("3_r7e0l")
+volume_db = -11.866
+max_distance = 1e+08
+bus = &"SFX"
+
+[node name="WallCling" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(3, 0)
+stream = ExtResource("3_yfn8n")
+volume_db = -11.168
+pitch_scale = 0.61
+max_distance = 1e+08
+bus = &"SFX"
+
+[node name="DownAirLand" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(3, 0)
+stream = ExtResource("3_708j7")
+max_distance = 1e+08
+bus = &"SFX"
+
+[node name="DownAirStart" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(3, 0)
+stream = ExtResource("4_j2dpx")
+max_distance = 1e+08
+bus = &"SFX"
+
+[node name="Damage" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(3, 0)
+stream = ExtResource("6_1aaji")
+max_distance = 1e+08
+bus = &"SFX"
+
+[node name="Death" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(3, 0)
+stream = ExtResource("7_0bsuk")
+max_distance = 1e+08
+bus = &"SFX"
+
+[node name="Checkpoint" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(3, 0)
+stream = ExtResource("8_6ha3b")
+max_distance = 1e+08
+bus = &"SFX"
+
+[node name="Finish" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(3, 0)
+stream = ExtResource("11_ngaur")
+max_distance = 1e+08
+bus = &"Music"
+
+[node name="Break" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(3, 0)
+stream = ExtResource("10_dln1q")
+max_distance = 1e+08
+bus = &"SFX"
+
+[node name="DownFire" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(3, 0)
+stream = ExtResource("5_knt8n")
+volume_db = -11.866
+max_distance = 1e+08
+bus = &"SFX"
+
+[node name="Dash" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(3, 0)
+stream = ExtResource("3_0pbqu")
+pitch_scale = 0.83
+max_distance = 1e+08
+bus = &"SFX"
+
+[node name="Slide" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(3, 0)
+stream = ExtResource("8_31u0s")
+pitch_scale = 0.83
+max_distance = 1e+08
+bus = &"SFX"
+
+[node name="Skid" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(3, 0)
+stream = ExtResource("9_ptpyk")
+max_distance = 1e+08
+bus = &"SFX"
+
+[node name="Land" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(3, 0)
+stream = ExtResource("5_sb1mj")
+max_distance = 1e+08
+bus = &"SFX"
+
+[node name="Dive" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(3, 0)
+stream = ExtResource("2_keo7y")
+volume_db = -4.188
+pitch_scale = 1.16
+max_distance = 1e+10
+bus = &"SFX"
+
+[node name="DiveHop" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(3, 0)
+stream = ExtResource("7_7h6qr")
+pitch_scale = 1.16
+max_distance = 1e+10
+bus = &"SFX"

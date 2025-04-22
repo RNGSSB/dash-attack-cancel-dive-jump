@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://biqyumc0dkeiy"]
+
+[ext_resource type="Script" path="res://Scripts/button_prompt.gd" id="1_tj4ig"]
+[ext_resource type="Texture2D" uid="uid://b8qod246bd4d5" path="res://Sprites/fourbutton1.png" id="2_42vn2"]
+[ext_resource type="Texture2D" uid="uid://ca7d30a7702n5" path="res://Sprites/key.png" id="3_0yns7"]
+[ext_resource type="FontFile" uid="uid://deydlwbpht51a" path="res://VCR_OSD_MONO_1.001.ttf" id="4_3yq76"]
+
+[node name="ButtonPrompt" type="Node2D"]
+script = ExtResource("1_tj4ig")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(3, 3)
+texture = ExtResource("2_42vn2")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(2, -10)
+scale = Vector2(3, 3)
+texture = ExtResource("3_0yns7")
+
+[node name="Label" type="Label" parent="."]
+texture_filter = 1
+offset_left = -17.0
+offset_top = -49.0
+offset_right = 23.0
+offset_bottom = 4.0
+theme_override_fonts/font = ExtResource("4_3yq76")
+theme_override_font_sizes/font_size = 60
+text = "W"
+horizontal_alignment = 1
+vertical_alignment = 1

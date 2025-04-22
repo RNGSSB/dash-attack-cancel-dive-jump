@@ -1,0 +1,72 @@
+[gd_scene load_steps=9 format=3 uid="uid://cqed85n36r7t6"]
+
+[ext_resource type="Script" path="res://Scripts/Enemy/EnemyBase.gd" id="1_ok755"]
+[ext_resource type="Script" path="res://Scripts/StateMachine.gd" id="2_wiiqu"]
+[ext_resource type="Texture2D" uid="uid://bsfvfovid024n" path="res://Sprites/enemytest.png" id="2_wvi3f"]
+[ext_resource type="Script" path="res://Scripts/Enemy/EnemyIdle.gd" id="3_3uepg"]
+[ext_resource type="Script" path="res://Scripts/Enemy/EnemyDeath.gd" id="5_akecp"]
+[ext_resource type="Script" path="res://Scripts/Enemy/EnemyStomped.gd" id="6_d7n8p"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b8yc4"]
+size = Vector2(9, 11)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mtowy"]
+size = Vector2(7, 10.375)
+
+[node name="EnemyBase" type="CharacterBody2D" node_paths=PackedStringArray("enemySprite", "enemyAnimation", "enemyCollision", "enemyHitbox", "raycastLeft", "raycastRight")]
+process_mode = 1
+scale = Vector2(3, 3)
+collision_layer = 4
+collision_mask = 5
+floor_constant_speed = true
+floor_snap_length = 80.0
+script = ExtResource("1_ok755")
+enemySprite = NodePath("Sprite2D")
+enemyAnimation = NodePath("AnimationPlayer")
+enemyCollision = NodePath("EnemyCollision")
+enemyHitbox = NodePath("Area2D/EnemyHitbox")
+raycastLeft = NodePath("EdgeLeft")
+raycastRight = NodePath("EdgeRight")
+SPEED = 300
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_wvi3f")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 3
+
+[node name="EnemyHitbox" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0.5, 1.5)
+shape = SubResource("RectangleShape2D_b8yc4")
+debug_color = Color(0.987896, 0, 0.308028, 0.42)
+
+[node name="EnemyCollision" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 1.8125)
+shape = SubResource("RectangleShape2D_mtowy")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("2_wiiqu")
+initial_state = NodePath("EnemyIdle")
+
+[node name="EnemyIdle" type="Node" parent="StateMachine"]
+script = ExtResource("3_3uepg")
+
+[node name="EnemyDeath" type="Node" parent="StateMachine"]
+script = ExtResource("5_akecp")
+
+[node name="EnemyStomped" type="Node" parent="StateMachine"]
+script = ExtResource("6_d7n8p")
+
+[node name="EdgeLeft" type="RayCast2D" parent="."]
+position = Vector2(-3, 7)
+target_position = Vector2(0, 9)
+
+[node name="EdgeRight" type="RayCast2D" parent="."]
+position = Vector2(4, 7)
+target_position = Vector2(0, 9)
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

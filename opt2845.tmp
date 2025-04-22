@@ -1,0 +1,92 @@
+[gd_scene load_steps=2 format=3 uid="uid://cau6utct3p3ib"]
+
+[ext_resource type="Script" path="res://Scripts/options.gd" id="1_c36wp"]
+
+[node name="Options" type="CanvasLayer" node_paths=PackedStringArray("fullCheck", "muteCheck", "masterSlider", "musicSlider", "sfxSlider")]
+script = ExtResource("1_c36wp")
+fullCheck = NodePath("PanelContainer/VBoxContainer/Fullscreen")
+muteCheck = NodePath("PanelContainer/VBoxContainer/Mute")
+masterSlider = NodePath("PanelContainer/VBoxContainer/VolumeSlider")
+musicSlider = NodePath("PanelContainer/VBoxContainer/MusicSlider")
+sfxSlider = NodePath("PanelContainer/VBoxContainer/SFXSlider")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -250.0
+offset_right = 200.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Options"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Fullscreen" type="CheckBox" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Fullscreen"
+
+[node name="Mute" type="CheckBox" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Mute"
+
+[node name="Label2" type="Label" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Master Volume"
+
+[node name="VolumeSlider" type="HSlider" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+min_value = -72.0
+max_value = 10.0
+
+[node name="Label3" type="Label" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Music"
+
+[node name="MusicSlider" type="HSlider" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+min_value = -72.0
+max_value = 10.0
+
+[node name="Label4" type="Label" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "SFX"
+
+[node name="SFXSlider" type="HSlider" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+min_value = -72.0
+max_value = 10.0
+
+[node name="Controls" type="Button" parent="PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Controls"
+
+[node name="Return" type="Button" parent="PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Return"
+
+[connection signal="toggled" from="PanelContainer/VBoxContainer/Fullscreen" to="." method="_on_fullscreen_toggled"]
+[connection signal="toggled" from="PanelContainer/VBoxContainer/Mute" to="." method="_on_mute_toggled"]
+[connection signal="value_changed" from="PanelContainer/VBoxContainer/VolumeSlider" to="." method="_on_volume_slider_value_changed"]
+[connection signal="value_changed" from="PanelContainer/VBoxContainer/MusicSlider" to="." method="_on_music_slider_value_changed"]
+[connection signal="value_changed" from="PanelContainer/VBoxContainer/SFXSlider" to="." method="_on_sfx_slider_value_changed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Controls" to="." method="_on_controls_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Return" to="." method="_on_return_pressed"]

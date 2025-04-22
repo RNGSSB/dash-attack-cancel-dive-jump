@@ -1,0 +1,85 @@
+[gd_scene load_steps=11 format=3 uid="uid://dulgcbmn51wa"]
+
+[ext_resource type="PackedScene" uid="uid://hpovewrlirmj" path="res://Objects/exit.tscn" id="1_ammrn"]
+[ext_resource type="Script" path="res://Scripts/levelmanager.gd" id="1_rkqiy"]
+[ext_resource type="PackedScene" uid="uid://d1d7c5v28jg53" path="res://Objects/player_spawn.tscn" id="1_y874n"]
+[ext_resource type="Texture2D" uid="uid://diifn8vq7s5fg" path="res://icon.svg" id="2_2pxxp"]
+[ext_resource type="PackedScene" uid="uid://cqed85n36r7t6" path="res://Objects/enemy_base.tscn" id="4_fm51t"]
+[ext_resource type="PackedScene" uid="uid://23effkp4hxmr" path="res://Objects/checkpoint.tscn" id="5_v8yxy"]
+[ext_resource type="Script" path="res://Scripts/death_plane.gd" id="7_ci24k"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fixee"]
+size = Vector2(1384, 408)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lusr1"]
+size = Vector2(265.75, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t2vgl"]
+size = Vector2(17600, 350)
+
+[node name="Map" type="Node2D"]
+script = ExtResource("1_rkqiy")
+
+[node name="PlayerSpawn" parent="." instance=ExtResource("1_y874n")]
+position = Vector2(540, 210)
+
+[node name="Exit" parent="." instance=ExtResource("1_ammrn")]
+position = Vector2(-344, -237)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(591.5, 702.5)
+scale = Vector2(10.8203, 3.16406)
+texture = ExtResource("2_2pxxp")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(593, 709)
+shape = SubResource("RectangleShape2D_fixee")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(1529, 555)
+shape = SubResource("RectangleShape2D_fixee")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(1537, 8)
+shape = SubResource("RectangleShape2D_fixee")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-537, 572)
+shape = SubResource("RectangleShape2D_fixee")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-622, 80)
+shape = SubResource("RectangleShape2D_fixee")
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(1545, 314)
+shape = SubResource("RectangleShape2D_lusr1")
+
+[node name="EnemyBase" parent="." instance=ExtResource("4_fm51t")]
+position = Vector2(918, 283)
+
+[node name="Checkpoint" parent="." instance=ExtResource("5_v8yxy")]
+position = Vector2(1523, 280)
+
+[node name="Checkpoint2" parent="." instance=ExtResource("5_v8yxy")]
+position = Vector2(1014, -219)
+checkPointNum = 2
+
+[node name="Checkpoint3" parent="." instance=ExtResource("5_v8yxy")]
+position = Vector2(2026, -221)
+checkPointNum = 3
+
+[node name="DeathPlane" type="Node2D" parent="."]
+position = Vector2(371, 421)
+script = ExtResource("7_ci24k")
+
+[node name="Area2D" type="Area2D" parent="DeathPlane"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeathPlane/Area2D"]
+position = Vector2(748, 649)
+shape = SubResource("RectangleShape2D_t2vgl")
+debug_color = Color(0, 0, 0, 0.42)
+
+[connection signal="area_entered" from="DeathPlane/Area2D" to="DeathPlane" method="_on_area_2d_area_entered"]

@@ -22,3 +22,6 @@ extends Node2D
 @onready var song3 = $Song3
 @onready var menu = $Menu
 @onready var portal = $Portal
+@onready var end = $EnterEnd
+@onready var perfect = $DiveSave
+@onready var reset = $Reset

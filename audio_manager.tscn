@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://cxbt11ceett6f"]
+[gd_scene load_steps=27 format=3 uid="uid://cxbt11ceett6f"]
 
 [ext_resource type="Script" path="res://Scripts/audio_manager.gd" id="1_ikamn"]
 [ext_resource type="AudioStream" uid="uid://dio3banlajlse" path="res://SFX/dive.wav" id="2_keo7y"]
@@ -7,9 +7,12 @@
 [ext_resource type="AudioStream" uid="uid://cgiaiu1si7v3i" path="res://Music/Musiclol.mp3" id="3_1guft"]
 [ext_resource type="AudioStream" uid="uid://bx11dy3ykaf42" path="res://SFX/explosion.wav" id="3_708j7"]
 [ext_resource type="AudioStream" uid="uid://xbt3ddstobjr" path="res://SFX/portal.wav" id="3_bnx05"]
+[ext_resource type="AudioStream" uid="uid://b1ipnn53tx64n" path="res://SFX/enterend.wav" id="3_c26tg"]
 [ext_resource type="AudioStream" uid="uid://khptdrx7hqm7" path="res://SFX/pickupCoin.wav" id="3_r7e0l"]
+[ext_resource type="AudioStream" uid="uid://i4c8fvl2u073" path="res://SFX/reset.wav" id="3_uindb"]
 [ext_resource type="AudioStream" uid="uid://dalsay5htdmia" path="res://SFX/click.wav" id="3_yfn8n"]
 [ext_resource type="AudioStream" uid="uid://bpll2fkdkidmu" path="res://Music/song2.mp3" id="4_ed6fr"]
+[ext_resource type="AudioStream" uid="uid://d1n7yar6mgeo2" path="res://SFX/divesave.wav" id="4_iecim"]
 [ext_resource type="AudioStream" uid="uid://b6iqh26je25t3" path="res://SFX/dairstart.wav" id="4_j2dpx"]
 [ext_resource type="AudioStream" uid="uid://cv807u6ot02oj" path="res://Music/title.mp3" id="4_pftkt"]
 [ext_resource type="AudioStream" uid="uid://bm47ew2obg8o1" path="res://SFX/dairFire.wav" id="5_knt8n"]
@@ -31,6 +34,25 @@ script = ExtResource("1_ikamn")
 [node name="Jump" type="AudioStreamPlayer2D" parent="."]
 position = Vector2(3, 0)
 stream = ExtResource("2_tvh53")
+max_distance = 1e+08
+bus = &"SFX"
+
+[node name="Reset" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(3, 0)
+stream = ExtResource("3_uindb")
+max_distance = 1e+08
+bus = &"SFX"
+
+[node name="EnterEnd" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(3, 0)
+stream = ExtResource("3_c26tg")
+pitch_scale = 1.27
+max_distance = 1e+08
+bus = &"SFX"
+
+[node name="DiveSave" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(3, 0)
+stream = ExtResource("4_iecim")
 max_distance = 1e+08
 bus = &"SFX"
 
@@ -94,6 +116,7 @@ bus = &"SFX"
 [node name="Damage" type="AudioStreamPlayer2D" parent="."]
 position = Vector2(3, 0)
 stream = ExtResource("6_1aaji")
+volume_db = 2.792
 max_distance = 1e+08
 bus = &"SFX"
 

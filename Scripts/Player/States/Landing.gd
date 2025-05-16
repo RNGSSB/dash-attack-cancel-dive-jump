@@ -16,15 +16,11 @@ func Update(_delta: float):
 func Physics_Update(delta: float):
 	if owner.is_on_floor() and owner.bufferJump:
 		Transitioned.emit(self, "jump")
-	
-	if owner.is_on_floor() and owner.bufferAttack and (Input.is_action_pressed("Run") or Input.is_action_pressed("RunKey")):
+	elif owner.is_on_floor() and owner.bufferAttack and (Input.is_action_pressed("Run") or Input.is_action_pressed("RunKey")):
 		Transitioned.emit(self, "dashattack")
-	
-	if owner.is_on_floor() and owner.bufferAttack and (!Input.is_action_pressed("Run") and !Input.is_action_pressed("RunKey")):
+	elif owner.is_on_floor() and owner.bufferAttack and (!Input.is_action_pressed("Run") and !Input.is_action_pressed("RunKey")):
 		Transitioned.emit(self, "groundattack")
-	
-	if !owner.is_on_floor():
+	elif !owner.is_on_floor():
 		Transitioned.emit(self, "air")
-	
-	if owner.stateFrame == 5:
+	else:
 		Transitioned.emit(self, "idle")

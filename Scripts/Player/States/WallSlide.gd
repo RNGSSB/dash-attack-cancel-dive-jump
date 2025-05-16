@@ -36,12 +36,7 @@ func Physics_Update(delta: float):
 	owner.velocity.y += owner.wallBrake
 	
 	if owner.bufferJump:
-		owner.velocity.x = owner.wallVelX * -owner.dir
-		owner.velocity.y = owner.wallVelY 
-		AudioManager.wallCling.stop()
-		AudioManager.slide.stop()
-		AudioManager.jump.play()
-		Transitioned.emit(self, "air")
+		Transitioned.emit(self, "walljump")
 	
 	if owner.is_on_floor():
 		Transitioned.emit(self, "idle")

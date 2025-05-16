@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=3 uid="uid://dsdwsy6tk5q3q"]
+[gd_scene load_steps=66 format=3 uid="uid://dsdwsy6tk5q3q"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player.gd" id="1_7esl2"]
 [ext_resource type="Script" path="res://Scripts/StateMachine.gd" id="2_qjiyy"]
@@ -24,6 +24,8 @@
 [ext_resource type="Script" path="res://Scripts/Player/States/Damage.gd" id="21_lkvhk"]
 [ext_resource type="Script" path="res://Scripts/Player/States/Death.gd" id="22_sp6fc"]
 [ext_resource type="Script" path="res://Scripts/Player/States/Bounce.gd" id="23_sdxui"]
+[ext_resource type="Script" path="res://Scripts/Player/States/End.gd" id="25_0dl8r"]
+[ext_resource type="Script" path="res://Scripts/Player/States/WallJump.gd" id="26_420hn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ikckr"]
 size = Vector2(149, 38)
@@ -59,7 +61,8 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_48ous"]
 resource_name = "CROUCH"
-length = 33.3
+length = 0.033335
+step = 0.0166667
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -67,10 +70,44 @@ tracks/0/path = NodePath("PlayerSprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.0333333),
+"times": PackedFloat32Array(0, 0.0166667),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [1, 2]
+}
+
+[sub_resource type="Animation" id="Animation_8qq3c"]
+resource_name = "CROUCHIDLE"
+length = 0.0166683
+step = 0.0166667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [2]
+}
+
+[sub_resource type="Animation" id="Animation_2ysp1"]
+resource_name = "CROUCHUP"
+length = 0.033335
+step = 0.0166667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0166667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [1, 0]
 }
 
 [sub_resource type="Animation" id="Animation_5dxag"]
@@ -273,8 +310,8 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_ag3mx"]
 resource_name = "IDLE"
-length = 0.0333367
-loop_mode = 1
+length = 0.0166683
+step = 0.0166667
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -559,6 +596,8 @@ tracks/0/keys = {
 _data = {
 "AIRDASHATTACK": SubResource("Animation_j1pk5"),
 "CROUCH": SubResource("Animation_48ous"),
+"CROUCHIDLE": SubResource("Animation_8qq3c"),
+"CROUCHUP": SubResource("Animation_2ysp1"),
 "DAMAGE": SubResource("Animation_5dxag"),
 "DASHATTACK": SubResource("Animation_kxsv3"),
 "DEATH": SubResource("Animation_r01j2"),
@@ -590,9 +629,10 @@ _data = {
 "WALLSLIDE": SubResource("Animation_2xnls")
 }
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("animation", "rayRight", "rayLeft", "rayCeilingRight", "rayCeilingLeft", "playerArea", "wallParticles", "slideParticles", "stompParticles", "hubris", "killyourselfplease") groups=["Player"]]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("animation", "rayRight", "rayLeft", "rayCeilingRight", "rayCeilingLeft", "coolTech", "playerArea", "wallParticles", "slideParticles", "stompParticles", "endParticles", "blood", "diveParticles", "hubris", "killyourselfplease") groups=["Player"]]
 process_mode = 1
 collision_layer = 2
+collision_mask = 129
 floor_constant_speed = true
 floor_max_angle = 1.39626
 floor_snap_length = 32.0
@@ -602,21 +642,27 @@ rayRight = NodePath("RayRight")
 rayLeft = NodePath("RayLeft")
 rayCeilingRight = NodePath("RayCeilingRight")
 rayCeilingLeft = NodePath("RayCeilingLeft")
+coolTech = NodePath("CoolTech")
 playerArea = NodePath("Area2D")
 wallParticles = NodePath("WallParticles")
 slideParticles = NodePath("SlideParticles")
 stompParticles = NodePath("StompParticles")
+endParticles = NodePath("Explosion")
+blood = NodePath("Blood")
+diveParticles = NodePath("DiveParticles")
 hubris = NodePath("hubris")
 killyourselfplease = NodePath("hubris/CollisionShape2D")
 walkSpeed = 600
 runSpeed = 1000
 runAccel = 80
+runDeccel = 120
 walkAccel = 60
 airAccelX = 45
-airDeccelX = 45
+airDeccelX = 80
 airAccelY = 35
 airSpeedX = 800
 airSpeedY = 4000
+groundBrake = 120
 airBrake = 3
 jumpVel1 = -900
 diveSpeedY = -500
@@ -662,6 +708,55 @@ gravity = Vector2(0, -980)
 initial_velocity_min = 300.0
 initial_velocity_max = 300.0
 scale_amount_max = 5.0
+
+[node name="DiveParticles" type="CPUParticles2D" parent="."]
+position = Vector2(0, 37)
+emitting = false
+amount = 20
+lifetime = 0.05
+one_shot = true
+explosiveness = 0.36
+emission_shape = 4
+emission_points = PackedVector2Array()
+emission_colors = PackedColorArray()
+spread = 180.0
+gravity = Vector2(0, -980)
+initial_velocity_min = 300.0
+initial_velocity_max = 300.0
+scale_amount_max = 5.0
+
+[node name="Explosion" type="CPUParticles2D" parent="."]
+process_mode = 3
+position = Vector2(0, 4)
+emitting = false
+amount = 30
+lifetime = 0.35
+one_shot = true
+explosiveness = 0.87
+emission_shape = 4
+emission_points = PackedVector2Array()
+emission_colors = PackedColorArray()
+spread = 180.0
+initial_velocity_min = 544.75
+initial_velocity_max = 544.75
+scale_amount_max = 5.0
+color = Color(0.381841, 1, 0.844097, 1)
+
+[node name="Blood" type="CPUParticles2D" parent="."]
+position = Vector2(0, 4)
+emitting = false
+amount = 60
+lifetime = 2.0
+explosiveness = 0.87
+emission_shape = 4
+emission_points = PackedVector2Array()
+emission_colors = PackedColorArray()
+spread = 180.0
+initial_velocity_min = 544.75
+initial_velocity_max = 544.75
+scale_amount_min = 3.0
+scale_amount_max = 7.0
+color = Color(0.812232, 0.0228259, 3.85046e-07, 1)
 
 [node name="PlayerUI" type="CanvasLayer" parent="."]
 script = ExtResource("2_wgdy3")
@@ -717,11 +812,11 @@ libraries = {
 
 [node name="RayRight" type="RayCast2D" parent="."]
 position = Vector2(3, -2)
-target_position = Vector2(16, 0)
+target_position = Vector2(21, 0)
 
 [node name="RayLeft" type="RayCast2D" parent="."]
 position = Vector2(3, -2)
-target_position = Vector2(-16, 0)
+target_position = Vector2(-21, 0)
 
 [node name="RayCeilingLeft" type="RayCast2D" parent="."]
 position = Vector2(-6, 32)
@@ -730,6 +825,10 @@ target_position = Vector2(0, -57)
 [node name="RayCeilingRight" type="RayCast2D" parent="."]
 position = Vector2(12, 32)
 target_position = Vector2(0, -57)
+
+[node name="CoolTech" type="RayCast2D" parent="."]
+position = Vector2(3, 23)
+target_position = Vector2(0, 20)
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("2_qjiyy")
@@ -791,6 +890,12 @@ script = ExtResource("22_sp6fc")
 
 [node name="Bounce" type="Node" parent="StateMachine"]
 script = ExtResource("23_sdxui")
+
+[node name="End" type="Node" parent="StateMachine"]
+script = ExtResource("25_0dl8r")
+
+[node name="WallJump" type="Node" parent="StateMachine"]
+script = ExtResource("26_420hn")
 
 [connection signal="body_shape_entered" from="hubris" to="." method="_on_hubris_body_shape_entered"]
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

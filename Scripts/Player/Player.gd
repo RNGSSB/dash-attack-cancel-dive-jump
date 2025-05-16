@@ -11,10 +11,14 @@ extends CharacterBody2D
 @export var rayLeft : RayCast2D
 @export var rayCeilingRight : RayCast2D
 @export var rayCeilingLeft : RayCast2D
+@export var coolTech : RayCast2D
 @export var playerArea : Area2D
 @export var wallParticles : CPUParticles2D
 @export var slideParticles : CPUParticles2D
 @export var stompParticles : CPUParticles2D
+@export var endParticles : CPUParticles2D
+@export var blood : CPUParticles2D
+@export var diveParticles : CPUParticles2D
 @export var hubris : Area2D
 @export var killyourselfplease : CollisionShape2D
 @onready var area2d = $Area2D
@@ -87,6 +91,7 @@ var airControl = true
 var isGrounded = false
 var stateFrame = 0
 var frameCounter = 0.0
+var frameCounter2 = 0.0
 var minuteCounter = 0.0
 var jumpBuffer = 0
 var bufferJump = false
@@ -107,6 +112,7 @@ var canFastFall = true
 var killyourselftimer = 0
 var coins = 0
 var capFallSpeed = false
+var invincibleTimer = 0
 
 func ready():
 	HP = maxHealth
@@ -161,6 +167,13 @@ func _process(delta):
 	
 	var keyX = Input.get_axis("LeftKey", "RightKey")
 	var keyY = Input.get_axis("DownKey", "UpKey")	
+	
+	if invincibleTimer > 0:
+		invincible = true
+		print("I AM INVINCIBLEEEEEEE!!!!!")
+		invincibleTimer -= 1
+	else:
+		invincible = false
 	
 	if controllerX != 0 and keyX != 0:
 		if controllerX != keyX:
@@ -240,9 +253,18 @@ func _process(delta):
 			velocity.y = diveSpeedY
 		stateMachine.change_state("Dive")
 	
-	#WallSlide
-	if (rayRight.is_colliding() and inputX > 0 || rayLeft.is_colliding() and inputX < 0) and !isGrounded and !is_on_floor() and velocity.y > 0 and CURRSTATE != "AirAttack" and CURRSTATE != "Damage" and CURRSTATE != "Death" and CURRSTATE != "DownAir" and !rayCeilingLeft.is_colliding() and !rayCeilingRight.is_colliding():
+	#Wall Slide
+	if (rayRight.is_colliding() and inputX > 0 || rayLeft.is_colliding() and inputX < 0) and is_on_wall() and !isGrounded and !is_on_floor() and velocity.y > 0 and CURRSTATE != "AirAttack" and CURRSTATE != "Damage" and CURRSTATE != "Death" and CURRSTATE != "DownAir" and !rayCeilingLeft.is_colliding() and !rayCeilingRight.is_colliding():
 		stateMachine.change_state("WallSlide")
+	
+	#Wall Jump
+	if !is_on_floor() and inputX != 0 and (ctrl == 1 || CURRSTATE == "Dive" and !rayCeilingLeft.is_colliding() and !rayCeilingRight.is_colliding()) and !isGrounded and CURRSTATE != "Death" and (rayRight.is_colliding() || rayLeft.is_colliding()) and bufferJump:
+		if rayRight.is_colliding():
+			dir = 1
+		elif rayLeft.is_colliding():
+			dir = -1
+		stateMachine.change_state("Air")
+		stateMachine.change_state("WallJump")
 	
 	#Dash Attack
 	if ctrl == 1 and is_on_floor() and bufferAttack and (Input.is_action_pressed("Run") or Input.is_action_pressed("RunKey")) and isGrounded:
@@ -261,7 +283,15 @@ func _process(delta):
 		stateMachine.change_state("DownAir")
 
 func _physics_process(delta):
-	frameCounter += 1.0
+	if CURRSTATE != "End":
+		frameCounter += 1.0
+		if !Common.timeAttack or (Common.timeAttack and get_node(Common.GameManagerRef).timeStart):
+			frameCounter2 += 1.0
+	
+	if CURRSTATE == "Dive":
+		set_collision_mask_value(8, true)
+	else:
+		set_collision_mask_value(8, false)
 	
 	playerSprite.scale.x = abs(playerSprite.scale.x) * dir
 	
@@ -278,9 +308,9 @@ func _physics_process(delta):
 		hubris.set_collision_mask_value(9, true)
 		killyourselfplease.disabled = false
 	
-	if velocity.y > 0 and bufferFastFall and canFastFall and velocity.y < fastFall:
-		capFallSpeed = false
-		velocity.y = fastFall
+	#if velocity.y > 0 and bufferFastFall and canFastFall and velocity.y < fastFall:
+	#	capFallSpeed = false
+	#	velocity.y = fastFall
 	
 	if is_on_floor():
 		var normal: Vector2 = get_floor_normal()
@@ -324,49 +354,33 @@ func _physics_process(delta):
 
 
 func _on_area_2d_area_entered(area):
-	if area.is_in_group("Coin"):
-		coins += 1
-		AudioManager.coin.play()
-		area.owner.queue_free()
-	if area.is_in_group("Enemy"):
-		if attacking and area.owner.takeDamage:
-			if velocity.x != 0:
-				area.owner.DIR = sign(velocity.x)
-			else:
-				if area.owner.DIR > 0 and dir < 0:
-					area.owner.flipEnemy()
-				elif area.owner.DIR < 0 and dir > 0:
-					area.owner.flipEnemy()
-			area.owner.stateMachine.change_state("EnemyDeath")
-		if is_on_floor():
-			if attacking:
-				if !area.owner.takeDamage:
-					if velocity.x == 0:
-						area.owner.flipEnemy()
-					else:
-						if sign(velocity.x) == area.owner.DIR:
-							pass
-						else:
-							area.owner.flipEnemy()
-					stateMachine.change_state("Death")
-			elif !invincible:
-				if velocity.x == 0:
-					area.owner.flipEnemy()
+	if CURRSTATE != "Death":
+		if area.is_in_group("Coin"):
+			coins += 1
+			AudioManager.coin.play()
+			area.owner.queue_free()
+		if area.is_in_group("Enemy"):
+			if attacking and area.owner.takeDamage:
+				if velocity.x != 0:
+					area.owner.DIR = sign(velocity.x)
 				else:
-					if sign(velocity.x) == area.owner.DIR:
-						pass
-					else:
+					if area.owner.DIR > 0 and dir < 0:
 						area.owner.flipEnemy()
-				stateMachine.change_state("Death")
-			else:
-				pass
-		else:
-			if velocity.y >= 0 and !attacking and area.owner.canBounce:
-				stateMachine.change_state("Air")
-				stateMachine.change_state("Bounce")
+					elif area.owner.DIR < 0 and dir > 0:
+						area.owner.flipEnemy()
 				area.owner.stateMachine.change_state("EnemyDeath")
-			elif attacking:
-				if !area.owner.takeDamage:
+			if is_on_floor():
+				if attacking:
+					if !area.owner.takeDamage:
+						if velocity.x == 0:
+							area.owner.flipEnemy()
+						else:
+							if sign(velocity.x) == area.owner.DIR:
+								pass
+							else:
+								area.owner.flipEnemy()
+						stateMachine.change_state("Death")
+				elif !invincible:
 					if velocity.x == 0:
 						area.owner.flipEnemy()
 					else:
@@ -375,26 +389,49 @@ func _on_area_2d_area_entered(area):
 						else:
 							area.owner.flipEnemy()
 					stateMachine.change_state("Death")
-			else:
-				if velocity.x == 0:
-					area.owner.flipEnemy()
 				else:
-					if sign(velocity.x) == area.owner.DIR:
-						pass
-					else:
+					pass
+			else:
+				if velocity.y >= 0 and !attacking and area.owner.canBounce:
+					stateMachine.change_state("Air")
+					stateMachine.change_state("Bounce")
+					area.owner.stateMachine.change_state("EnemyDeath")
+				elif attacking:
+					if !area.owner.takeDamage:
+						if velocity.x == 0:
+							area.owner.flipEnemy()
+						else:
+							if sign(velocity.x) == area.owner.DIR:
+								pass
+							else:
+								area.owner.flipEnemy()
+						stateMachine.change_state("Death")
+				else:
+					if velocity.x == 0:
 						area.owner.flipEnemy()
-				stateMachine.change_state("Death")
-		
+					else:
+						if sign(velocity.x) == area.owner.DIR:
+							pass
+						else:
+							area.owner.flipEnemy()
+					stateMachine.change_state("Death")
+			
 
 
 func _on_area_2d_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
 	if !body.is_in_group("Enemy"):
-		if body.name == "Layer1":
+		if body.name == "Layer1" and !invincible:
 			stateMachine.change_state("Death")
+		if body.name == "Layer1" and invincible:
+			AudioManager.perfect.play()
 
 
 func _on_hubris_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
 	if breakWalls:
+		var instance = Common.explosion.instantiate()
+		instance.position = body.get_coords_for_body_rid(body_rid) / Vector2i(position)
+		instance.emitting = true
+		add_child(instance)
 		AudioManager.breakWall.play()
 		body.erase_cell(body.get_coords_for_body_rid(body_rid))
 	killyourselftimer = frameCounter

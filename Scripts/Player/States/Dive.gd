@@ -5,6 +5,8 @@ var reverse = false
 var framesMidAir = 0
 var soundTime = 0.11
 
+var spikeSave = true
+
 func airAccelStuff():
 	if owner.inputX > 0:
 		if owner.velocity.x < 0:
@@ -34,11 +36,13 @@ func Exit():
 
 func Enter():
 	AudioManager.dive.play()
+	owner.diveParticles.emitting = true
 	owner.bufferDive = false
 	owner.airControl = false
 	owner.divenum = 0
 	owner.ctrl = 0
 	owner.isGrounded = false
+	spikeSave = true
 	owner.canTurn = false
 	owner.animation.play("DIVESTART")
 	framesMidAir = 0
@@ -65,6 +69,9 @@ func Physics_Update(delta: float):
 		AudioManager.jump.stop()
 	
 	if owner.is_on_floor():
+		if !owner.isGrounded:
+			owner.invincibleTimer = 1
+		owner.isGrounded = true
 		framesMidAir = 0
 		if abs(owner.velocity.x) > 500:
 			owner.slideParticles.emitting = true
@@ -72,10 +79,11 @@ func Physics_Update(delta: float):
 		if owner.velocity.x != 0:
 			owner.dir = sign(owner.velocity.x)
 		owner.velocity.x += 60 * owner.get_floor_normal()[0]
-		owner.velocity.x -= min(abs(owner.velocity.x), owner.groundBrake * 0.4) * sign(owner.velocity.x)
+		owner.velocity.x -= min(abs(owner.velocity.x), 60 * 0.4) * sign(owner.velocity.x)
 		if owner.animation.current_animation != "DIVESLIDE":
 			owner.animation.play("DIVESLIDE")
 	else:
+		owner.isGrounded = false
 		owner.slideParticles.emitting = false
 		var rotationVel = owner.velocity.y
 		if rotationVel > 600:
@@ -96,11 +104,13 @@ func Physics_Update(delta: float):
 		owner.bufferDive = false
 		owner.bufferJump = false
 		AudioManager.diveHop.play()
+		owner.invincibleTimer = 3
 		Transitioned.emit(self, "air")
 	
 	if owner.is_on_floor() and owner.velocity.x == 0 and owner.get_floor_angle() == 0:
 		if !owner.rayCeilingRight.is_colliding() and !owner.rayCeilingLeft.is_colliding():
 			owner.hitboxChange(0)
+			owner.animation.stop()
 			Transitioned.emit(self, "idle")
 		else:
 			owner.velocity.x = 300 * owner.dir

@@ -40,6 +40,11 @@ var canPause = true
 
 var currentSong 
 
+var isPaused = false 
+
+var timeStart = false
+
+
 
 func saveTime(num, total, minute, coins):
 	if num == 1:
@@ -54,7 +59,10 @@ func saveTime(num, total, minute, coins):
 		checkTotalFrames3 = total
 		checkMinuteFrames3 = minute
 		currentCoins = coins
-	
+
+
+func timeAttackSave(total, minute):
+	Common.savedTimes[currentLevel] = Vector2(total, minute)
 
 func setCameraLimits(left, top, right, bottom):
 	cameraLimitLeft = left
@@ -69,7 +77,7 @@ func spawnPlayer(position):
 	var playerInstance = PLAYER.instantiate()
 	var cameraInstance = CAMERA.instantiate()
 	playerInstance.position = position
-	playerInstance.frameCounter = currentTotalFrames
+	playerInstance.frameCounter2 = currentTotalFrames
 	playerInstance.minuteCounter = currentMinuteFrames
 	playerInstance.coins = currentCoins
 	cameraInstance.position = position
@@ -126,6 +134,7 @@ func _unhandled_input(event):
 
 func Resume():
 	pausecheck = 0
+	isPaused = false
 	get_tree().paused = false
 
 func nextLevel():
@@ -152,6 +161,8 @@ func nextLevel():
 	get_tree().paused = false
 
 func Respawn():
+	if Common.timeAttack:
+		timeStart = false
 	for n in get_children():
 		print("removing " + n.name)
 		remove_child(n)
@@ -170,6 +181,8 @@ func Respawn():
 
 
 func Restart():
+	if Common.timeAttack:
+		timeStart = false
 	for n in get_children():
 		print("removing " + n.name)
 		remove_child(n)
@@ -186,6 +199,8 @@ func Restart():
 	currentCheck = 0
 	pauseInstance.visible = false
 	pausecheck = 0
+	isPaused = false
+	AudioManager.reset.play()
 	add_child(newInstance)
 	add_child(pauseInstance)
 	get_tree().paused = false
@@ -224,28 +239,32 @@ func _process(delta):
 		currentTotalFrames = checkTotalFrames3
 		currentCheck = 3
 	
-	if get_tree().paused and canPause:
-		pauseChild.visible = true
-	else:
-		pauseChild.visible = false
+	if OS.has_feature("editor"):
+		if Input.is_key_pressed(KEY_2) and canPause:
+			currentCheck = 1
+			Respawn()
 	
+		if Input.is_key_pressed(KEY_3) and canPause:
+			currentCheck = 2
+			Respawn()
 	
-	if Input.is_key_pressed(KEY_2) and canPause:
-		currentCheck = 1
-		Respawn()
+		if Input.is_key_pressed(KEY_4) and canPause:
+			currentCheck = 3
+			Respawn()
 	
-	if Input.is_key_pressed(KEY_3) and canPause:
-		currentCheck = 2
-		Respawn()
-	
-	if Input.is_key_pressed(KEY_4) and canPause:
-		currentCheck = 3
-		Respawn()
+	pauseChild.visible = isPaused
 	
 	if canPause:
 		if (Input.is_action_just_pressed("Start") or Input.is_action_just_pressed("StartKey")) and pausecheck == 0:
+			isPaused = true
+			pauseChild.resumeButton.grab_focus()
 			get_tree().paused = true
 		if (Input.is_action_just_pressed("Start") or Input.is_action_just_pressed("StartKey")) and pausecheck == 1:
+			isPaused = false
+			pauseChild.focus = 0
+			pauseChild.OptionsMenu.focus = 0
+			pauseChild.OptionsMenu.canPress = false
+			pauseChild.OptionsMenu.visible = false
 			get_tree().paused = false
 		if (Input.is_action_just_released("Start") or Input.is_action_just_released("StartKey")):
 			if pausecheck == 0:
@@ -253,5 +272,5 @@ func _process(delta):
 			else:
 				pausecheck = 0
 		
-	if (Input.is_action_just_pressed("Select") or Input.is_action_just_pressed("SelectKey")) and canPause:
+	if (Input.is_action_just_pressed("Select") or Input.is_action_just_pressed("SelectKey")) and canPause and Common.timeAttack:
 		Restart()

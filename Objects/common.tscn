@@ -48,6 +48,7 @@
 [ext_resource type="Texture2D" uid="uid://cyols2tt0mp4g" path="res://Sprites/bigkey.png" id="46_j4fck"]
 
 [node name="Common" type="Node"]
+process_mode = 3
 script = ExtResource("1_55ehc")
 downButtonSprite = ExtResource("2_7yxtl")
 rightButtonSprite = ExtResource("3_gya4f")

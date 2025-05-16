@@ -39,7 +39,9 @@ offset_right = 28.5
 offset_bottom = 15.5
 grow_horizontal = 2
 grow_vertical = 2
-text = "Retry?"
+focus_neighbor_top = NodePath("../Quit")
+focus_neighbor_bottom = NodePath("../Next")
+text = "Retry"
 
 [node name="Next" type="Button" parent="CanvasLayer"]
 anchors_preset = 8
@@ -53,6 +55,8 @@ offset_right = 29.0
 offset_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
+focus_neighbor_top = NodePath("../Retry")
+focus_neighbor_bottom = NodePath("../Quit")
 text = "Next"
 
 [node name="Quit" type="Button" parent="CanvasLayer"]
@@ -67,6 +71,8 @@ offset_right = 21.0
 offset_bottom = 104.5
 grow_horizontal = 2
 grow_vertical = 2
+focus_neighbor_top = NodePath("../Next")
+focus_neighbor_bottom = NodePath("../Retry")
 text = "Quit"
 
 [node name="Label" type="Label" parent="CanvasLayer"]
@@ -82,11 +88,30 @@ offset_right = 246.0
 offset_bottom = -64.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_y = 4
 theme_override_fonts/font = ExtResource("3_nt4ft")
 theme_override_font_sizes/font_size = 60
 text = "LEVEL CLEAR!!!"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="time" type="Label" parent="CanvasLayer"]
+visible = false
+texture_filter = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -27.0
+offset_top = 161.0
+offset_right = 28.0
+offset_bottom = 184.0
+grow_horizontal = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_y = 2
+theme_override_fonts/font = ExtResource("3_nt4ft")
+theme_override_font_sizes/font_size = 30
+text = "0:00:00"
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=4 uid="uid://bln5w0kdym5g"]
+[gd_scene load_steps=31 format=4 uid="uid://bln5w0kdym5g"]
 
 [ext_resource type="Script" path="res://Scripts/levelmanager.gd" id="1_e3o1a"]
 [ext_resource type="Texture2D" uid="uid://by8igymktep4x" path="res://Sprites/tilesfinal.png" id="2_0nhiw"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://dskc3yl8kh1rr" path="res://Objects/warning.tscn" id="11_n6an4"]
 [ext_resource type="PackedScene" uid="uid://curiob4qyqwum" path="res://Objects/coin.tscn" id="12_t64kt"]
 [ext_resource type="Texture2D" uid="uid://bxgaknr6n0qbg" path="res://Sprites/troll-face-poster.png" id="13_v3rss"]
+[ext_resource type="PackedScene" uid="uid://ptq71sw7qgve" path="res://Objects/time_start.tscn" id="14_jclo4"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_bvacu"]
 tile_data = PackedInt32Array(0, 655360, 5, 1, 720896, 5)
@@ -343,6 +344,9 @@ size = Vector2(13829, 1120)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m450n"]
 size = Vector2(146, 176)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uxo2q"]
+size = Vector2(89.5, 88)
+
 [node name="Map" type="Node2D"]
 script = ExtResource("1_e3o1a")
 
@@ -446,92 +450,92 @@ action = "Attack"
 position = Vector2(5803, -1357)
 action = "Down"
 
-[node name="Label" type="Label" parent="."]
+[node name="Label2" type="Label" parent="ButtonPrompt8"]
 texture_filter = 1
-offset_left = 1066.0
-offset_top = -192.0
-offset_right = 1207.0
-offset_bottom = -156.0
+offset_left = -4737.0
+offset_top = 1165.0
+offset_right = -4596.0
+offset_bottom = 1201.0
 theme_override_fonts/font = ExtResource("10_rdo1l")
 theme_override_font_sizes/font_size = 40
 text = "Attack"
 
-[node name="Label10" type="Label" parent="."]
+[node name="Label10" type="Label" parent="ButtonPrompt8"]
 texture_filter = 1
-offset_left = 186.0
-offset_top = -192.0
-offset_right = 327.0
-offset_bottom = -156.0
+offset_left = -5617.0
+offset_top = 1165.0
+offset_right = -5476.0
+offset_bottom = 1201.0
 theme_override_fonts/font = ExtResource("10_rdo1l")
 theme_override_font_sizes/font_size = 40
 text = "Jump"
 
-[node name="Label2" type="Label" parent="."]
+[node name="Label3" type="Label" parent="ButtonPrompt8"]
 texture_filter = 1
-offset_left = 2345.0
-offset_top = -248.0
-offset_right = 2556.0
-offset_bottom = -212.0
+offset_left = -3458.0
+offset_top = 1109.0
+offset_right = -3247.0
+offset_bottom = 1145.0
 theme_override_fonts/font = ExtResource("10_rdo1l")
 theme_override_font_sizes/font_size = 40
 text = "Wall Jump"
 
-[node name="Label8" type="Label" parent="."]
+[node name="Label8" type="Label" parent="ButtonPrompt8"]
 texture_filter = 1
-offset_left = 2738.0
-offset_top = -248.0
-offset_right = 2949.0
-offset_bottom = -212.0
+offset_left = -3065.0
+offset_top = 1109.0
+offset_right = -2854.0
+offset_bottom = 1145.0
 theme_override_fonts/font = ExtResource("10_rdo1l")
 theme_override_font_sizes/font_size = 40
 text = "+"
 
-[node name="Label3" type="Label" parent="."]
+[node name="Label4" type="Label" parent="ButtonPrompt8"]
 texture_filter = 1
-offset_left = 3505.0
-offset_top = -1181.0
-offset_right = 3716.0
-offset_bottom = -1145.0
+offset_left = -2298.0
+offset_top = 176.0
+offset_right = -2087.0
+offset_bottom = 212.0
 theme_override_fonts/font = ExtResource("10_rdo1l")
 theme_override_font_sizes/font_size = 40
 text = "Run"
 
-[node name="Label4" type="Label" parent="."]
+[node name="Label5" type="Label" parent="ButtonPrompt8"]
 texture_filter = 1
-offset_left = 4328.0
-offset_top = -1181.0
-offset_right = 4539.0
-offset_bottom = -1145.0
+offset_left = -1475.0
+offset_top = 176.0
+offset_right = -1264.0
+offset_bottom = 212.0
 theme_override_fonts/font = ExtResource("10_rdo1l")
 theme_override_font_sizes/font_size = 40
 text = "Slide"
 
-[node name="Label5" type="Label" parent="."]
+[node name="Label6" type="Label" parent="ButtonPrompt8"]
 texture_filter = 1
-offset_left = 5748.0
-offset_top = -1550.0
-offset_right = 5959.0
-offset_bottom = -1514.0
+offset_left = -55.0
+offset_top = -193.0
+offset_right = 297.0
+offset_bottom = -157.0
 theme_override_fonts/font = ExtResource("10_rdo1l")
 theme_override_font_sizes/font_size = 40
 text = "Stomp (Mid-air)"
 
-[node name="Label9" type="Label" parent="."]
+[node name="Label9" type="Label" parent="ButtonPrompt8"]
 texture_filter = 1
-offset_left = 5796.0
-offset_top = -1300.0
-offset_right = 6148.0
-offset_bottom = -1264.0
+offset_left = -7.0
+offset_top = 57.0
+offset_right = 345.0
+offset_bottom = 93.0
 theme_override_fonts/font = ExtResource("10_rdo1l")
 theme_override_font_sizes/font_size = 40
 text = "+"
 
-[node name="Label6" type="Label" parent="."]
+[node name="Label7" type="Label" parent="ButtonPrompt8"]
 texture_filter = 1
-offset_left = 5151.0
-offset_top = 474.0
-offset_right = 5362.0
-offset_bottom = 510.0
+offset_left = -652.0
+offset_top = 1831.0
+offset_right = -441.0
+offset_bottom = 1867.0
 theme_override_fonts/font = ExtResource("10_rdo1l")
 theme_override_font_sizes/font_size = 40
 text = "Dive"
@@ -748,5 +752,22 @@ position = Vector2(1770, -1490)
 scale = Vector2(0.133333, 0.154167)
 texture = ExtResource("13_v3rss")
 
+[node name="DeathPlane2" type="Node2D" parent="."]
+position = Vector2(1761, -1494)
+script = ExtResource("7_mnjyr")
+
+[node name="Area2D" type="Area2D" parent="DeathPlane2"]
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeathPlane2/Area2D"]
+position = Vector2(11, 6)
+shape = SubResource("RectangleShape2D_uxo2q")
+debug_color = Color(0, 0, 0, 0.42)
+
+[node name="TimeStart" parent="." instance=ExtResource("14_jclo4")]
+position = Vector2(323, -61)
+
 [connection signal="area_entered" from="DeathPlane/Area2D" to="DeathPlane" method="_on_area_2d_area_entered"]
 [connection signal="area_entered" from="CameraSwitcher/Area2D" to="CameraSwitcher" method="_on_area_2d_area_entered"]
+[connection signal="area_entered" from="DeathPlane2/Area2D" to="DeathPlane2" method="_on_area_2d_area_entered"]

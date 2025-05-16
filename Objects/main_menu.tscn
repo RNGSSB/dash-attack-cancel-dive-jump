@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://durf8o8ofv2gr"]
+[gd_scene load_steps=6 format=3 uid="uid://durf8o8ofv2gr"]
 
 [ext_resource type="Script" path="res://Scripts/main_menu.gd" id="1_35xvv"]
 [ext_resource type="PackedScene" uid="uid://blkbwdgrn6lj1" path="res://input_mapper2.tscn" id="2_etnqn"]
 [ext_resource type="PackedScene" uid="uid://cau6utct3p3ib" path="res://options.tscn" id="3_e57vo"]
+[ext_resource type="PackedScene" uid="uid://coaa4micjdhh4" path="res://TimeAttack.tscn" id="4_emjif"]
 [ext_resource type="Texture2D" uid="uid://c7wjw7rc8mufw" path="res://Sprites/logo.png" id="4_nbog8"]
 
 [node name="MainMenu" type="Control" node_paths=PackedStringArray("levelCounter")]
@@ -20,6 +21,9 @@ levelCounter = NodePath("PanelContainer/VBoxContainer/LevelCounter")
 visible = false
 
 [node name="Options" parent="." instance=ExtResource("3_e57vo")]
+visible = false
+
+[node name="TimeAttack" parent="." instance=ExtResource("4_emjif")]
 visible = false
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
@@ -57,6 +61,10 @@ text = "New Game"
 layout_mode = 2
 text = "Load Game"
 
+[node name="TimeAttack" type="Button" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Time Attack"
+
 [node name="DeleteData" type="Button" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 text = "Delete Data"
@@ -76,6 +84,7 @@ texture = ExtResource("4_nbog8")
 [connection signal="pressed" from="PanelContainer/VBoxContainer/NoSave" to="." method="_on_no_save_pressed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/NewGame" to="." method="_on_new_game_pressed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/LoadGame" to="." method="_on_load_game_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/TimeAttack" to="." method="_on_time_attack_pressed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/DeleteData" to="." method="_on_delete_data_pressed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Options" to="." method="_on_options_pressed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/QuitGame" to="." method="_on_quit_game_pressed"]

@@ -18,6 +18,7 @@ func Enter():
 	
 	if (Input.is_action_pressed("Run") or Input.is_action_pressed("RunKey")):
 		owner.animation.play("AIRDASHATTACK")
+		AudioManager.dash.play()
 		owner.airDashAttack = true
 	else:
 		if owner.inputY == 0:

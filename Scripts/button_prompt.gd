@@ -63,11 +63,14 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if get_node(Common.GameManagerRef).controllerType == 0:
-		sprite.visible = true
-		sprite2.visible = false
-		label.visible = false
+	if Common.timeAttack == false:
+		if get_node(Common.GameManagerRef).controllerType == 0:
+			sprite.visible = true
+			sprite2.visible = false
+			label.visible = false
+		else:
+			sprite.visible = false
+			sprite2.visible = true
+			label.visible = true
 	else:
-		sprite.visible = false
-		sprite2.visible = true
-		label.visible = true
+			visible = false

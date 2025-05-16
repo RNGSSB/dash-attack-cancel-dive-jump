@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=4 uid="uid://cosguw37s8m7g"]
+[gd_scene load_steps=26 format=4 uid="uid://cosguw37s8m7g"]
 
 [ext_resource type="Script" path="res://Scripts/levelmanager.gd" id="1_tmc48"]
 [ext_resource type="Texture2D" uid="uid://by8igymktep4x" path="res://Sprites/tilesfinal.png" id="2_yxvxt"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://Scripts/camera_switcher.gd" id="7_yphff"]
 [ext_resource type="PackedScene" uid="uid://cxaqdjw4u3ubu" path="res://Objects/portal.tscn" id="8_5slvb"]
 [ext_resource type="PackedScene" uid="uid://curiob4qyqwum" path="res://Objects/coin.tscn" id="9_6sajp"]
+[ext_resource type="PackedScene" uid="uid://ptq71sw7qgve" path="res://Objects/time_start.tscn" id="10_x62m5"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_bvacu"]
 tile_data = PackedInt32Array(0, 655360, 5, 1, 720896, 5)
@@ -466,6 +467,9 @@ position = Vector2(3800, -196)
 
 [node name="Coin9" parent="." instance=ExtResource("9_6sajp")]
 position = Vector2(3798, -308)
+
+[node name="TimeStart" parent="." instance=ExtResource("10_x62m5")]
+position = Vector2(21, 133)
 
 [connection signal="area_entered" from="DeathPlane/Area2D" to="DeathPlane" method="_on_area_2d_area_entered"]
 [connection signal="area_entered" from="CameraSwitcher/Area2D" to="CameraSwitcher" method="_on_area_2d_area_entered"]

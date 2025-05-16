@@ -10,6 +10,7 @@ func Exit():
 	owner.slideParticles.emitting = false
 	owner.animation.stop()
 	owner.breakWalls = false
+	owner.animation.stop()
 
 func Enter():
 	owner.ctrl = 0
@@ -45,7 +46,7 @@ func Physics_Update(delta: float):
 		if owner.is_on_floor() and owner.bufferAttack and (!Input.is_action_pressed("Run") and !Input.is_action_pressed("RunKey")) and (owner.rayCeilingRight.is_colliding() or owner.rayCeilingLeft.is_colliding()) and owner.inputY < 0:
 			Transitioned.emit(self, "groundattack")
 		
-		owner.velocity.x -= min(abs(owner.velocity.x), owner.groundBrake * 0.3) * sign(owner.velocity.x)
+		owner.velocity.x -= min(abs(owner.velocity.x), 60 * 0.3) * sign(owner.velocity.x)
 		
 		if owner.bufferJump and !owner.rayCeilingRight.is_colliding() and !owner.rayCeilingLeft.is_colliding():
 			Transitioned.emit(self, "jump")

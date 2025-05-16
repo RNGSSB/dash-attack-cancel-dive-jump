@@ -11,9 +11,12 @@ func _ready():
 
 func _toggled(button_pressed):
 	set_process_unhandled_input(button_pressed)
+	grab_focus()
 	if button_pressed:
+		grab_focus()
 		text = "...Waiting"
 	else:
+		owner.setting = false
 		update_text()
 
 func _unhandled_input(event):
@@ -22,7 +25,7 @@ func _unhandled_input(event):
 			InputMap.action_erase_events(action)
 			InputMap.action_add_event(action, event)
 			button_pressed = false
-			release_focus()
+			grab_focus()
 			update_text()
 			input_mapper.keymaps[action] = event
 			input_mapper.save_keymap()

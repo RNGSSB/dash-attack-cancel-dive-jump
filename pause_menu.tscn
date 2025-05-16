@@ -1,10 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://cgdsjtg1b0p3c"]
+[gd_scene load_steps=4 format=3 uid="uid://cgdsjtg1b0p3c"]
 
 [ext_resource type="Script" path="res://Scripts/pause_menu.gd" id="1_eg2qv"]
+[ext_resource type="PackedScene" uid="uid://blkbwdgrn6lj1" path="res://input_mapper2.tscn" id="2_12lmm"]
+[ext_resource type="PackedScene" uid="uid://cau6utct3p3ib" path="res://options.tscn" id="2_t4oul"]
 
 [node name="PauseMenu" type="CanvasLayer"]
 process_mode = 3
 script = ExtResource("1_eg2qv")
+
+[node name="InputMapper" parent="." instance=ExtResource("2_12lmm")]
+visible = false
+
+[node name="Options" parent="." instance=ExtResource("2_t4oul")]
+visible = false
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 anchors_preset = 8
@@ -38,6 +46,10 @@ text = "Resume
 layout_mode = 2
 text = "Restart"
 
+[node name="Options" type="Button" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Options"
+
 [node name="Quit" type="Button" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 text = "Quit
@@ -45,4 +57,5 @@ text = "Quit
 
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Resume" to="." method="_on_resume_pressed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Restart" to="." method="_on_restart_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Options" to="." method="_on_options_pressed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]

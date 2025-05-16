@@ -13,8 +13,10 @@ func Enter():
 	owner.set_collision_mask_value(1, false)
 	owner.set_collision_mask_value(8, false)
 	owner.set_collision_mask_value(4, false)
+	owner.set_collision_mask_value(9, false)
 	owner.area2d.set_collision_mask_value(4, false)
 	owner.hubris.set_collision_mask_value(4, false)
+	owner.blood.emitting = true
 	owner.animation.play("DEATH")
 	owner.playerArea.process_mode = Node.ProcessMode.PROCESS_MODE_DISABLED
 

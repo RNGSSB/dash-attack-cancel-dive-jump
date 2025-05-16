@@ -3,10 +3,12 @@ extends State
 
 func Exit():
 	owner.ctrl = 1
+	owner.attacking = false
 
 func Enter():
 	AudioManager.dairLand.play()
 	AudioManager.dairFire.stop()
+	owner.attacking = true
 	owner.ctrl = 0
 	owner.animation.play("DOWNAIRLANDING")
 	owner.stompParticles.emitting = true
@@ -34,7 +36,8 @@ func Physics_Update(delta: float):
 		Transitioned.emit(self, "air")
 	
 	if owner.get_floor_angle() != 0:
-		#owner.velocity.x = (owner.stompVelY * 0.8) * owner.dir
+		owner.dir = sign(owner.get_floor_normal()[0])
+		owner.velocity.x = (owner.stompVelY * 0.8) * owner.dir
 		owner.velocity.y = 0
 		Transitioned.emit(self, "slide")
 	

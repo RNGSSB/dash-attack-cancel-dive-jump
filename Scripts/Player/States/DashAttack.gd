@@ -28,7 +28,7 @@ func Update(_delta: float):
 	pass
 
 func Physics_Update(delta: float):
-	owner.velocity.x -= min(abs(owner.velocity.x), owner.groundBrake * 0.5) * sign(owner.velocity.x)
+	owner.velocity.x -= min(abs(owner.velocity.x), 60 * 0.5) * sign(owner.velocity.x)
 	
 	if !owner.is_on_floor() and coyoteTimer == 0:
 		coyoteTimer = owner.frameCounter

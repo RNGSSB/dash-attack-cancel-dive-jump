@@ -50,7 +50,6 @@ text = "Master Volume"
 layout_mode = 2
 min_value = -72.0
 max_value = 10.0
-step = 0.0
 value = -10.0
 
 [node name="Label3" type="Label" parent="PanelContainer/VBoxContainer"]
